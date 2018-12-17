@@ -2,20 +2,16 @@ let app = new Vue({
     el: "#app",
     data: {
         displayInstruction: false,
-        displayIntro: true,
+        displayIntro: false,
         isTimerRunning: false,
         startSecond: 4,
         animals: [],
+        gameStarted: false,
     },
     watch: {
-        displayIntro () {
-            $('#introModal').modal('toggle');
-        },
-        displayInstruction () {
-            $('#introductionModal').modal('toggle');
-        }
     },
     mounted () {
+        // this.introduction()
         this.animals = [
             {
                 name: "turtle",
@@ -38,8 +34,8 @@ let app = new Vue({
                 isFound: false
             },
             {
-                name: "kaola",
-                image: "kaola.png",
+                name: "koala",
+                image: "koala.png",
                 isFound: false
             },
             {
@@ -69,18 +65,39 @@ let app = new Vue({
             }
         ];
 
-        this.animals = shuffle(this.animals);
-
+        this.animals = this.shuffle(this.animals);
+        // while (true) {
+        //     this.mapCursor();
+        // }
     },
     methods: {
-        introAudioEnded () {
-            this.displayIntro = false;
+        startGame () {
+            this.gameStarted = true;
+            this.introduction();
+        },
+        introduction () {
+            document.querySelector('#introAudio').play();
+            document.querySelector('#introAudio').addEventListener('ended', () => {
+                this.displayIntro = false;
+                this.instruction ();
+                
+            });
+            this.displayIntro = true;
+        },
+        instruction () {
             this.displayInstruction = true;
             document.querySelector('#instructionAudio').play();
-        },
-        instructionAudioEnded () {
-            this.displayInstruction = false;
-            this.startTimer();
+            document.querySelector('#instructionAudio').addEventListener('ended', () => {
+                this.displayInstruction = false;
+                this.startTimer();
+                document.querySelector('#app').addEventListener('mousemove', (event) => {
+                    let cursor = document.querySelector('#myCursor');
+                    cursor.style.display = "block";
+                    cursor.style.top = `${event.clientY - 65}px` ;
+                    cursor.style.left = `${event.clientX - 115}px`;
+                });
+            });
+            this.dissipateImages();
         },
         startTimer () {
             this.isTimerRunning = true;
@@ -106,28 +123,44 @@ let app = new Vue({
             return array;
         },
         changeCursor (image) {
-            document.body.style.cursor = `url(cursor-${image})  5 5, pointer`;
+            document.querySelector('#myCursor').style.backgroundImage = `url(img/bino@${image})`;
+        },
+        returnCursor () {
+            document.querySelector('#myCursor').style.backgroundImage = `url(img/cursorbinocular.png)`;
         },
         dissipateImages () {
             let row = document.createElement('div');
             row.classList = "row"
+            row.style.paddingTop="20%"
             this.animals.forEach(animal => {
                 let elem = document.createElement('div');
-                elem.classList = "col-4 m-3";
-                // elem.style.backgroundImage = animal.image;
-                elem.addEventListener('mouseover', function () {
+                let space = document.createElement('div');
+                space.classList= "col-3";
+                space.style.height = "50px;"
+                elem.classList = "col-2 ";
+                elem.style.height = "70px";
+                elem.style.marginLeft = "50px"
+                elem.style.marginTop = "50px";
+                elem.style.zIndex = 2;
+                elem.style.backgroundImage = animal.image;
+                elem.addEventListener('mouseenter', () => {
                     this.changeCursor(animal.image);
                 });
-                elem.addEventListener('click', function () {
-                    this.selectAnimal(animal, $event);
+                elem.addEventListener('mouseleave', () => {
+                    this.returnCursor();
+                });
+                elem.addEventListener('click',  () => {
+                    this.selectAnimal(animal, event);
                 })
                 row.appendChild(elem);
+                row.appendChild(space);
             });
-            document.body.appendChild(row);
+            document.querySelector('#appContainer').appendChild(row);
         },
         selectAnimal (animal, evt) {
             evt.target.style.backgroundImage = animal.image;
-            animal.isFound = true;
+            console.log("James")
+            // animal.isFound = true;
         }
 
     }

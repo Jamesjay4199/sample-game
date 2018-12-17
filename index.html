@@ -9,43 +9,94 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+      #myCursor {
+        top: 30px;
+        left: 30px;
+        z-index: 1;
+        width: 230px;
+        height: 130px;
+        display: none;
+        position: absolute;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-image: url("img/cursorbinocular.png");
+      }
+      .myModal {
+        position: absolute;
+        top: 20%;
+        left: 33%;
+        background-color: #fdfdfd;
+        border: #ffffff 2px solid;
+        border-radius: 10px;
+      }
+      .myModal > div{
+        width: 450px;
+      }
+      .mymodal-header {
+        border-radius: 10px 10px 0 0;
+      }
+      .myfooter {
+        background: #604D53;
+        height: 10px !important;
+        border-radius: 0 0 10px 10px;
+      }
+    </style>
   </head>
   <body>
-    <section>
-      <div class="container">
-                <!-- Button trigger modal -->
-        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#introModal">
-            Launch demo modal
-          </button>
-          
-          <!-- Modal -->
-          <div class="modal fade mt-5 pt-5" id="introModal" tabindex="-1" role="dialog" aria-labelledby="introModal" aria-hidden="true">
-            <div class="modal-dialog " role="document">
-              <div class="modal-content">
-                <div class="modal-header text-center">
-                  <div class="introduction bg-light">Introduction</div>
-                </div>
-                <div class="modal-body">
-                  <p class="p-intro">
-                    Helen the animal sanctuary wardens is looking for some animals. Let's help her!
-                  </p>
-                  <div class="img-center text-center">
-                    <img src="img/elephant.jpeg" alt="elephant" srcset="" class="img-fluid">
-                  </div>
-                </div>
-                <div class="modal-foote">
-                </div>
+    <section id="app">
+      <div class="container" id="appContainer">
+        <!-- Introduction Modal -->
+        <div class="myModal" id="introModal" v-if="displayIntro">
+          <div>
+            <div class="mymodal-header text-center py-1">
+              <div class="introduction bg-light">Introduction</div>    
+            </div>
+            <div class="mymodal-body mx-4 pt-4">
+              <p class="p-intro">
+                Helen the animal sanctuary warden is looking for some animals. Let's help her!
+              </p>
+              <div class="img-center text-center mb-2">
+                <img src="img/Camera-move.png" alt="elephant" srcset="" class="img-fluid">
               </div>
             </div>
+            <div class="myfooter"></div>
+          </div> 
+        </div>
+          <button class="btn btn-primary" @click="startGame" v-if="!gameStarted">StartGame</button>
+        <!-- Instruction Modal -->
+        <div class="myModal" id="introModal"v-if="displayInstruction" >
+          <div>
+            <div class="mymodal-header text-center py-1">
+              <div class="introduction bg-light">Instruction</div>
+            </div>
+            <div class="mymodal-body mx-4 pt-4 mb-3">
+              <p class="p-intro d-inline">
+                Move the binoculars around to look for the animals. Select an animal and answer the question that follows.
+                <span class="d-flex justify-content-between">
+                  The animal will appear only if you answer the question correctly. Good luck!
+                  <span class="img-center float-right">
+                    <img src="img/horse.jpeg" alt="horse" style="width:250px" class="img-fluid">
+                  </span>
+                </span>  
+                
+              </p>
+            </div>
+            <div class="myfooter mt-3"></div>
           </div>
-
-        
+        </div>
       </div>
+      <div id="myCursor"></div>
     </section>
+    <!-- Audio Files -->
+    <audio src="audio/Introduction.mp3" id="introAudio" controls hidden></audio>
+    <audio src="audio/Instructions.mp3" id="instructionAudio" controls  hidden></audio>
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <script src="js/index.js"></script>
   </body>
 </html>
