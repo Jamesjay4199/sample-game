@@ -33,6 +33,23 @@ body{
     border-radius: 100%;
     padding: 0 5px;
 }
+.ques-number{
+    border: 2px ridge #724770;
+    background: #fff;
+    border-radius: 100%;
+    padding: 0 5px; 
+}
+.ans-number{
+    border: 2px groove #724770;
+    background-image: linear-gradient(#fff 10%, #724770 50%);
+    color: white;
+    border-radius: 100%;
+    padding: 0 5px; 
+}
+
+.question-bg{
+    background-image: repeating-radial-gradient(yellow, white 20%); 
+}
 
 @media only screen and (max-width: 600px) {
     body{
