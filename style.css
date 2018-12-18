@@ -55,6 +55,87 @@ body{
     background-image: repeating-radial-gradient(yellow, white 20%); 
 }
 
+#myCursor {
+    top: 30px;
+    left: 30px;
+    z-index: 1;
+    cursor: none;
+    width: 230px;
+    height: 130px;
+    display: none;
+    position: absolute;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-image: url("img/cursorbinocular.png");
+    }
+    .myModal {
+    position: absolute;
+    top: 20%;
+    left: 33%;
+    background-color: #fdfdfd;
+    border: #ffffff 2px solid;
+    border-radius: 10px;
+    }
+    .myModal > div{
+    width: 450px;
+    }
+    .mymodal-header {
+    border-radius: 10px 10px 0 0;
+    }
+    .myfooter {
+    background: #604D53;
+    height: 10px !important;
+    border-radius: 0 0 10px 10px;
+    }
+    .question {
+    position: absolute;
+    background-color: #E0C441;
+    width: 58.6%;
+    left: 20%;
+    bottom: 0px;
+    font-size: 14px;
+    z-index: 2;
+    }
+    .cursor-pointer {
+    cursor: pointer;
+    }
+    .myCheck {
+    margin-top: -13px;
+    margin-left: 15px;
+    }
+    .mybtn {
+    position: absolute;
+    top: 45%;
+    left: 47%;
+    }
+
+.timer{
+    position: fixed;
+    bottom: 200px;
+    right: 23%;
+    font-size: 20px;
+    font-weight: 600;
+    width: 120px;
+    border: 5px ridge rgba(222, 184, 135, 0.932);
+    color: burlywood;
+    background: rgb(34, 15, 1)   
+}
+
+.level{
+    position: fixed;
+    bottom: 60px;
+    right: 22%;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 2px ;
+    width: 120px;
+    background:white;
+    border: 10px inset #b67cb5;
+    border-radius: 15px;
+    color: #724770;
+    z-index: 3;
+}
+
 @media only screen and (max-width: 600px) {
     body{
         /* background-size: 100%; */

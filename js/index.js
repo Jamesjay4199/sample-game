@@ -5,6 +5,8 @@ let app = new Vue({
         animals: [],
         questions: [],
         startSecond: 4,
+        isTimeUp: false,
+        selectedAnimal: {},
         gameStarted: false,
         hasAnswered: false,
         displayIntro: false,
@@ -198,22 +200,6 @@ let app = new Vue({
             cursor.style.top = `${event.clientY - 65}px`;
             cursor.style.left = `${event.clientX - 115}px`;
         },
-        startTimer () {
-            this.isTimerRunning = true;
-            milliSecond = 99;
-            let interval = setInterval(() => {
-                milliSecond--;
-                
-                if (milliSecond === 0) {
-                    this.startSecond--;
-                }
-                
-            }, 10);
-            if (this.startSecond === 0) {
-                clearInterval(interval);
-                milliSecond = 0;
-            }
-        },
         shuffle (array) {
             for (let i = array.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
@@ -257,7 +243,11 @@ let app = new Vue({
             });
             document.querySelector('#appContainer').appendChild(row);
         },
-        selectAnimal (animal, evt) {
+        selectAnimal (animal) {
+            if (this.selectAnimal.name === animal.name) {
+                return;
+            }
+            this.selectAnimal = animal;
             document.querySelector('#app').removeEventListener('mousemove', this.moveListener);
             document.querySelector('#app').addEventListener('mousemove', () => {
                 this.changeCursor(animal.image);
@@ -273,6 +263,10 @@ let app = new Vue({
                 elem.addEventListener('mouseleave', () => {
                     this.returnCursor();
                 });
+                elem.style.cursor = "default";
+                elem.addEventListener('click', () => {
+                    selectAnimal(animal)
+                })
             })
             // evt.target.style.backgroundImage = animal.image;
             this.selectedQuestion = this.questions[Math.floor(10 * Math.random())];
@@ -299,10 +293,45 @@ let app = new Vue({
             } else if (section.toLowerCase() === "instruction") {
                 document.querySelector('#instructionAudio').pause();
                 this.displayInstruction = false;
+                this.startTimer();
                 document.querySelector('#app').addEventListener('mousemove', this.moveListener);
                 this.dissipateImages();
             }
+        },
+        startTimer() {
+            let time_in_minutes = 5;
+            let current_time = Date.parse(new Date());
+            let deadline = new Date(current_time + time_in_minutes * 60 * 1000);
+
+
+            function time_remaining(endtime) {
+                var t = Date.parse(endtime) - Date.parse(new Date());
+                var seconds = Math.floor((t / 1000) % 60);
+                var minutes = Math.floor((t / 1000 / 60) % 60);
+                var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+                var days = Math.floor(t / (1000 * 60 * 60 * 24));
+                return { 'total': t, 'days': days, 'hours': hours, 'minutes': minutes, 'seconds': seconds };
+            }
+            function run_clock(id, endtime) {
+                var clock = document.getElementById(id);
+                function update_clock() {
+                    var t = time_remaining(endtime);
+                    document.querySelector('#minute').innerHTML =  t.minutes
+                    if (t.seconds == 0) {
+                        t.seconds = "00"
+                    }
+                    document.querySelector('#seconds').innerHTML =  t.seconds;
+                    if (t.total <= 0) { 
+                        app.isTimeUp = true;
+                        clearInterval(timeinterval); 
+                    }
+                }
+                update_clock(); // run function once at first to avoid delay
+                var timeinterval = setInterval(update_clock, 1000);
+            }
+            run_clock('clockdiv', deadline);
         }
+        
 
     }
 })
