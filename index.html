@@ -49,7 +49,7 @@
         background-color: #E0C441;
         width: 59%;
         left: 20.5%;
-        bottom: -10px;
+        bottom: 0px;
       }
       .cursor-pointer {
         cursor: pointer;
@@ -81,6 +81,9 @@
               <div class="img-center text-center mb-2">
                 <img src="img/Camera-move.png" alt="elephant" srcset="" class="img-fluid">
               </div>
+              <div class="d-flex justify-content-end mb-3">
+                <button class="btn btn-sm btn-outline-warning px-3" @click="skip('introduction')">Skip &nbsp;&nbsp;&nbsp;></button>
+              </div>
             </div>
             <div class="myfooter"></div>
           </div> 
@@ -103,6 +106,9 @@
                 </span>  
                 
               </p>
+              <div class="d-flex justify-content-end mb-3 mt-2">
+                <button class="btn btn-sm btn-outline-warning px-3" @click="skip('instruction')">Skip &nbsp;&nbsp;&nbsp;></button>
+              </div>
             </div>
             <div class="myfooter mt-3"></div>
           </div>

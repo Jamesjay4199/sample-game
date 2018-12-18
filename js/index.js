@@ -88,7 +88,7 @@ let app = new Vue({
                 answer: "had gone"
             },
             {
-                question: "I______________watched tortoise in the animal enclosure when I felt the tremors of an earth quake",
+                question: "I______________tortoise in the animal enclosure when I felt the tremors of an earth quake",
                 options: [
                     "watched", "had watched", "was watching"
                 ],
@@ -189,8 +189,8 @@ let app = new Vue({
                 this.displayInstruction = false;
                 this.startTimer();
                 document.querySelector('#app').addEventListener('mousemove', this.moveListener);
+                this.dissipateImages();
             });
-            this.dissipateImages();
         },
         moveListener (event) {
             let cursor = document.querySelector('#myCursor');
@@ -259,12 +259,18 @@ let app = new Vue({
         },
         selectAnimal (animal, evt) {
             document.querySelector('#app').removeEventListener('mousemove', this.moveListener);
+            document.querySelector('#app').addEventListener('mousemove', () => {
+                this.changeCursor(animal.image);
+            });
+            /* document.querySelector('#app').addEventListener('mouseleave', () => {
+                this.returnCursor();
+            }); */
             this.hasSelectedAnimal = true;
             document.querySelectorAll('.animals').forEach(elem => {
-                elem.removeEventListener('mouseenter', () => {
+                elem.addEventListener('mouseenter', () => {
                     this.changeCursor(animal.image);
                 });
-                elem.removeEventListener('mouseleave', () => {
+                elem.addEventListener('mouseleave', () => {
                     this.returnCursor();
                 });
             })
@@ -283,6 +289,18 @@ let app = new Vue({
                 setTimeout(() => {
                     document.querySelectorAll('.myCheck')[index].style.display = "none";
                 }, 700);
+            }
+        },
+        skip (section) {
+            if (section.toLowerCase() === "introduction") {
+                document.querySelector('#introAudio').pause();
+                this.displayIntro = false;
+                this.instruction();
+            } else if (section.toLowerCase() === "instruction") {
+                document.querySelector('#instructionAudio').pause();
+                this.displayInstruction = false;
+                document.querySelector('#app').addEventListener('mousemove', this.moveListener);
+                this.dissipateImages();
             }
         }
 
