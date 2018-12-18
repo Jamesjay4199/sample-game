@@ -317,8 +317,11 @@ let app = new Vue({
                 function update_clock() {
                     var t = time_remaining(endtime);
                     document.querySelector('#minute').innerHTML =  t.minutes
-                    if (t.seconds == 0) {
-                        t.seconds = "00"
+                    // if (t.seconds == 0) {
+                    //     t.seconds = "00"
+                    // }
+                    if (t.seconds < 10) {
+                        t.seconds = `0${t.seconds}`
                     }
                     document.querySelector('#seconds').innerHTML =  t.seconds;
                     if (t.total <= 0) { 
